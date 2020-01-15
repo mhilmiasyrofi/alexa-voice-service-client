@@ -47,6 +47,14 @@ class Directive:
     def name(self):
         return self.directive['header']['name']
 
+    @property
+    def payload(self):
+        return self.directive['payload']
+    
+    @property
+    def header(self):
+        return self.directive['header']
+
     def __repr__(self):
         return str(pprint.pprint(self.directive))
 
@@ -130,7 +138,6 @@ class AVSMultipartDecoder:
                     yield ExpectSpeechDirective.from_multipart(part)
                 else:
                     yield Directive.from_multipart(part)
-
 
 def generate_unique_id():
     return str(uuid.uuid4())
