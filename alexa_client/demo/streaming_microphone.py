@@ -1,6 +1,7 @@
 import argparse
 import io
 import time
+import os
 
 from pydub import AudioSegment
 from pydub.playback import play
@@ -8,12 +9,15 @@ import pyaudio
 
 from alexa_client import AlexaClient
 
+from alexa_client.alexa_client import constants
+
 
 def main(client_id, secret, refresh_token):
     alexa_client = AlexaClient(
         client_id=client_id,
         secret=secret,
         refresh_token=refresh_token,
+        base_url=constants.BASE_URL_NORTH_AMERICA
     )
 
     p = pyaudio.PyAudio()
@@ -67,19 +71,11 @@ def main(client_id, secret, refresh_token):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-c', '--client-id', help='AVS client ID', required=True
-    )
-    parser.add_argument(
-        '-s', '--client-secret', help='AVS client secret', required=True
-    )
-    parser.add_argument(
-        '-r', '--refresh-token', help='AVS refresh token', required=True
-    )
-    parsed = parser.parse_args()
+    client_id = os.getenv("CLIENT_ID")
+    client_secret = os.getenv("CLIENT_SECRET")
+    refresh_token = os.getenv("REFRESH_TOKEN")
     main(
-        client_id=parsed.client_id,
-        secret=parsed.client_secret,
-        refresh_token=parsed.refresh_token,
+        client_id=client_id,
+        secret=client_secret,
+        refresh_token=refresh_token,
     )
